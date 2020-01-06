@@ -1,5 +1,17 @@
 # README
 
+## users table
+
+|Column|Type|Options|
+|------|----|-------|
+|name|string|index: true, null: false, unique: true|
+|mail|string|null: false|
+
+### Association
+- has_many :groups,through: members
+- has_many :messages
+- has_many :members
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
