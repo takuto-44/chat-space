@@ -1,0 +1,21 @@
+.side-bar
+
+  .header
+    .header__box
+      .header__box__user
+        banana
+
+      %ul.header__box__menu
+        %li.header__box__menu__add-group
+          = link_to "#" do
+            = icon('fas', 'edit')
+        %li.header__box__menu__edit-user
+          = link_to "#" do
+            = icon('fas', 'cog')
+
+  .group
+    .group__list
+      .group__list__name
+        fruits
+      .group__list__message
+        リンゴもおいしい！
