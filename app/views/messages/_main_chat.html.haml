@@ -1,0 +1,41 @@
+.chat-main
+
+  .header
+    .header__box
+      .header__box__group
+        fruits
+      .header__box__member
+        Member : banana apple
+    .header__edit
+      = link_to "#" do
+        Edit
+
+  .message
+
+    .message__list
+      .message__list__box
+        .message__list__box__user
+          apple
+        .message__list__box__date
+          2020/01/10(Fri) 19:50
+      .message__list__message
+        りんごもおいしい！
+
+    .message__group
+      .message__group__box
+        .message__group__box__user
+          banana
+        .message__group__box__date
+          2020/01/10(Fri) 19:51
+      .message__group__message
+        でもバナナもおいしい！
+
+  .footer
+    .footer__box
+      .footer__box__message
+        type a message
+      %label.footer__box__image
+        = icon('fas', 'image')
+        %input.hidden{type: 'file'}
+    .footer__send
+      Send
