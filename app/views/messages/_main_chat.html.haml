@@ -3,39 +3,24 @@
   .header
     .header__box
       .header__box__group
-        fruits
+        = @group.name
       .header__box__member
-        Member : banana apple
+        Member:
+        - @group.users.each do |user|
+          = user.name
     .header__edit
-      = link_to "#" do
+      = link_to new_group_path do
         Edit
 
   .message
-
-    .message__list
-      .message__list__box
-        .message__list__box__user
-          apple
-        .message__list__box__date
-          2020/01/10(Fri) 19:50
-      .message__list__message
-        りんごもおいしい！
-
-    .message__group
-      .message__group__box
-        .message__group__box__user
-          banana
-        .message__group__box__date
-          2020/01/10(Fri) 19:51
-      .message__group__message
-        でもバナナもおいしい！
-
+    = render @messages
+    
   .footer
-    .footer__box
-      .footer__box__message
-        type a message
-      %label.footer__box__image
-        = icon('fas', 'image')
-        %input.hidden{type: 'file'}
-    .footer__send
-      Send
+    = form_for [@group, @message] do |f|
+      .footer__box
+        = f.text_field :comment, class: 'footer__box__message', placeholder: 'type a message'
+        .footer__box__left
+          = f.label :image, class: 'footer__box__left__image' do
+            = icon('fas', 'image', class: 'icon')
+            = f.file_field :image, class: 'hidden'
+      = f.submit 'Send', class: 'footer__box__send'
