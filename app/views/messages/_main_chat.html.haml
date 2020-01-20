@@ -12,15 +12,15 @@
       = link_to new_group_path do
         Edit
 
-  .message
+  .messages
     = render @messages
     
   .footer
     = form_for [@group, @message] do |f|
       .footer__box
         = f.text_field :comment, class: 'footer__box__message', placeholder: 'type a message'
-        .footer__box__left
-          = f.label :image, class: 'footer__box__left__image' do
+        .footer__box__space
+          = f.label :image, class: 'footer__box__space__image' do
             = icon('fas', 'image', class: 'icon')
             = f.file_field :image, class: 'hidden'
       = f.submit 'Send', class: 'footer__box__send'
