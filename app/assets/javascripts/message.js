@@ -1,6 +1,28 @@
 $(function() {
   function buildHTML(message){
-    if ( message.image ) {
+    if ( message.comment && message.image ) {
+      var html =
+       `<div class="message" data-message-id=${message.id}>
+          <div class="message-box">
+            <div class="upper-message">
+              <div class="upper-message__user-name">
+                ${message.user_name}
+              </div>
+              <div class="upper-message__date">
+                ${message.created_at}
+              </div>
+            </div>
+            <div class="lower-message">
+              <p class="lower-message__comment">
+                ${message.comment}
+              </p>
+              <p class="lower-message__image">
+              <img src=${message.image} >
+              </p>
+            </div>
+          </div>
+        </div>`
+    } else if (message.comment) {
       var html =
        `<div class="message" data-message-id=${message.id}>
           <div class="message-box">
@@ -17,11 +39,9 @@ $(function() {
                 ${message.comment}
               </p>
             </div>
-            <img src=${message.image} >
           </div>
         </div>`
-      return html;
-    } else {
+    } else if (message.image) {
       var html =
        `<div class="message" data-message-id=${message.id}>
           <div class="message-box">
@@ -34,15 +54,16 @@ $(function() {
               </div>
             </div>
             <div class="lower-message">
-              <p class="lower-message__comment">
-                ${message.comment}
+              <p class="lower-message__image">
+              <img src=${message.image} >
               </p>
             </div>
           </div>
         </div>`
-      return html;
     };
+    return html;
   }
+
   $('#new_message').on('submit', function(e){
     e.preventDefault()
     var formData = new FormData(this);
@@ -60,10 +81,37 @@ $(function() {
       $('.messages').append(html);
       $('.messages').animate({ scrollTop: $('.messages')[0].scrollHeight});
       $('form')[0].reset();
-      $('.form__submit').prop('disabled', false);
+      $('.footer__box__send').prop('disabled', false);
     })
     .fail(function() {
       alert("メッセージ送信に失敗しました");
     });
   });
+  var reloadMessages = function() {
+    last_message_id = $('.message:last').data("message-id");
+    $.ajax({
+      url: "api/messages",
+      type: 'get',
+      dataType: 'json',
+      data: {id: last_message_id}
+    })
+    .done(function(messages) {
+      if (messages.length !== 0) {
+        var insertHTML = '';
+        $.each(messages, function(i, message) {
+          insertHTML += buildHTML(message)
+        });
+        $('.messages').append(insertHTML);
+        $('.messages').animate({ scrollTop: $('.messages')[0].scrollHeight});
+        $("#new_message")[0].reset();
+        $(".footer__box__send").prop("disabled", false);
+      }
+    })
+    .fail(function() {
+      alert('error');
+    });
+  };
+  if (document.location.href.match(/\/groups\/\d+\/messages/)) {
+    setInterval(reloadMessages, 7000);
+  }
 }); 
